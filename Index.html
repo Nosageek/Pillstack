@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pillstack — Your medications, found.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   PILLSTACK V3 — TEAL + GREEN  ·  DARK NAVY / LIGHT MODE
+   
+   Architecture:
+   · :root  = brand tokens (never change)
+   · [data-theme="dark"]  = deep navy system (default)
+   · [data-theme="light"] = clean white/stone system
+   · All components reference semantic vars only
+═══════════════════════════════════════════════════════════════ */
+
+/* ── 0. RESET ─────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+
+/* ── 1. BRAND TOKENS ─────────────────────────────────────── */
+:root{
+  /* Teal family */
+  --teal-900:#052E2E;
+  --teal-800:#0A5C5C;
+  --teal-700:#0D8080;
+  --teal-500:#14B8A6;
+  --teal-300:#5EEAD4;
+  --teal-100:#CCFBF1;
+  /* Green family (DrugStoc) */
+  --green-800:#1A7A40;
+  --green-700:#27AE60;
+  --green-500:#2ECC71;
+  --green-300:#58D68D;
+  --green-100:#D5F5E3;
+  /* Fixed */
+  --white:#FFFFFF;
+  --black:#040C0C;
+}
+
+/* ── 2. DARK MODE (default) — deep navy ───────────────────── */
+[data-theme="dark"]{
+  /* Backgrounds — all navy */
+  --bg-page:    #0B1628;
+  --bg-section: #0F1D36;
+  --bg-card:    #132040;
+  --bg-raised:  #1A2A50;
+  --bg-overlay: #203060;
+  /* Borders */
+  --border:     rgba(94,234,212,.12);
+  --border-sub: rgba(255,255,255,.05);
+  /* Text */
+  --tx-1: #E8F2FF;
+  --tx-2: #8AACAC;
+  --tx-3: #4A7080;
+  /* Accents (vivid on navy) */
+  --ac-green:   var(--green-500);
+  --ac-teal:    var(--teal-500);
+  --ac-green-d: rgba(46,204,113,.12);
+  --ac-teal-d:  rgba(20,184,166,.12);
+  /* Nav */
+  --nav-bg:     rgba(11,22,40,.94);
+  --nav-border: rgba(20,184,166,.1);
+  /* Purpose section */
+  --vm-bg:      #0A1A30;
+  --vm-tx:      #E8F2FF;
+  --vm-tx-sub:  rgba(232,242,255,.6);
+  --vm-eyebrow: #5EEAD4;
+  /* Problem section */
+  --prob-bg:    #0F1D36;
+  --prob-stripe:rgba(20,184,166,.03);
+  --prob-card:  #132040;
+  --prob-card-h:#1A2A50;
+  --prob-tx:    #E8F2FF;
+  --prob-desc:  #8AACAC;
+  /* Steps */
+  --step-bg:    #132040;
+  --step-h:     #1A2A50;
+  --step-num:   rgba(20,184,166,.06);
+  /* Features */
+  --feat-bg:    #132040;
+  --feat-h:     #1A2A50;
+  --feat-demo-t:rgba(20,184,166,.08);
+  --feat-demo-b:rgba(20,184,166,.14);
+  --feat-demo-g:rgba(46,204,113,.06);
+  --feat-demo-gb:rgba(46,204,113,.14);
+  /* Testimonials */
+  --testi-bg:   #132040;
+  --testi-h:    #1A2A50;
+  --testi-q:    rgba(232,242,255,.78);
+  --testi-bd:   rgba(255,255,255,.05);
+  --testi-name: #E8F2FF;
+  /* Audience */
+  --aud-bg:     #0F1D36;
+  --aud-tabs:   #132040;
+  --aud-card:   #132040;
+  --aud-ctx:    rgba(20,184,166,.05);
+  --aud-tx:     #E8F2FF;
+  --aud-af:     rgba(232,242,255,.82);
+  --aud-bd:     rgba(255,255,255,.05);
+  /* CTA — stays teal always */
+  --cta-bg:     var(--teal-800);
+  /* Footer — always dark anchor */
+  --foot-bg:    #06101E;
+  --foot-link:  rgba(255,255,255,.38);
+  --foot-muted: rgba(255,255,255,.22);
+  /* Search */
+  --srch-bg:    rgba(20,184,166,.06);
+  --srch-bd:    rgba(20,184,166,.2);
+  --srch-tx:    #E8F2FF;
+  --srch-ph:    rgba(138,172,172,.55);
+  /* AI response */
+  --ai-bg:      rgba(46,204,113,.05);
+  --ai-bd:      rgba(46,204,113,.16);
+  /* Tags */
+  --htag-bg:    rgba(20,184,166,.08);
+  --htag-bd:    rgba(20,184,166,.18);
+  --htag-tx:    var(--teal-300);
+  --htag-hbg:   rgba(46,204,113,.1);
+  --htag-htx:   var(--green-500);
+  /* Proof */
+  --proof-bg:   #0F1D36;
+  --proof-bd:   rgba(20,184,166,.1);
+  /* Scrollbar */
+  --sb-track:   var(--bg-page);
+  /* Grid */
+  --grid-line:  rgba(20,184,166,.035);
+  /* Toggle */
+  --tog-bg:     rgba(20,184,166,.1);
+  --tog-bd:     rgba(20,184,166,.2);
+  --tog-tx:     var(--teal-300);
+}
+
+/* ── 3. LIGHT MODE ────────────────────────────────────────── */
+[data-theme="light"]{
+  /* Backgrounds */
+  --bg-page:    #F2F8FF;
+  --bg-section: #FFFFFF;
+  --bg-card:    #FFFFFF;
+  --bg-raised:  #EAF2FC;
+  --bg-overlay: #DCE9F8;
+  /* Borders */
+  --border:     rgba(10,92,92,.12);
+  --border-sub: rgba(10,92,92,.07);
+  /* Text */
+  --tx-1: #071212;
+  --tx-2: #2A5060;
+  --tx-3: #5A8090;
+  /* Accents (slightly deeper for light bg contrast) */
+  --ac-green:   var(--green-700);
+  --ac-teal:    var(--teal-700);
+  --ac-green-d: rgba(39,174,96,.08);
+  --ac-teal-d:  rgba(13,128,128,.08);
+  /* Nav */
+  --nav-bg:     rgba(242,248,255,.96);
+  --nav-border: rgba(10,92,92,.1);
+  /* Purpose — teal full bleed (same both modes) */
+  --vm-bg:      var(--teal-800);
+  --vm-tx:      #FFFFFF;
+  --vm-tx-sub:  rgba(255,255,255,.65);
+  --vm-eyebrow: var(--teal-300);
+  /* Problem */
+  --prob-bg:    #EAF2FC;
+  --prob-stripe:rgba(10,92,92,.025);
+  --prob-card:  #FFFFFF;
+  --prob-card-h:#EAF2FC;
+  --prob-tx:    #071212;
+  --prob-desc:  #2A5060;
+  /* Steps */
+  --step-bg:    #EBF5F5;
+  --step-h:     #D6EEED;
+  --step-num:   rgba(10,92,92,.06);
+  /* Features */
+  --feat-bg:    #FFFFFF;
+  --feat-h:     #EAF2FC;
+  --feat-demo-t:rgba(13,128,128,.05);
+  --feat-demo-b:rgba(13,128,128,.16);
+  --feat-demo-g:rgba(39,174,96,.05);
+  --feat-demo-gb:rgba(39,174,96,.16);
+  /* Testimonials */
+  --testi-bg:   #FFFFFF;
+  --testi-h:    #EAF2FC;
+  --testi-q:    #2A5060;
+  --testi-bd:   rgba(10,92,92,.08);
+  --testi-name: #071212;
+  /* Audience */
+  --aud-bg:     #F2F8FF;
+  --aud-tabs:   rgba(13,128,128,.08);
+  --aud-card:   #FFFFFF;
+  --aud-ctx:    rgba(13,128,128,.04);
+  --aud-tx:     #071212;
+  --aud-af:     #071212;
+  --aud-bd:     rgba(10,92,92,.08);
+  /* CTA — stays teal */
+  --cta-bg:     var(--teal-800);
+  /* Footer — intentionally dark in light mode (anchor) */
+  --foot-bg:    #071212;
+  --foot-link:  rgba(255,255,255,.4);
+  --foot-muted: rgba(255,255,255,.25);
+  /* Search */
+  --srch-bg:    rgba(13,128,128,.05);
+  --srch-bd:    rgba(13,128,128,.2);
+  --srch-tx:    #071212;
+  --srch-ph:    rgba(42,80,96,.4);
+  /* AI response */
+  --ai-bg:      rgba(39,174,96,.04);
+  --ai-bd:      rgba(39,174,96,.18);
+  /* Tags */
+  --htag-bg:    rgba(13,128,128,.07);
+  --htag-bd:    rgba(13,128,128,.18);
+  --htag-tx:    var(--teal-700);
+  --htag-hbg:   rgba(13,128,128,.14);
+  --htag-htx:   var(--teal-800);
+  /* Proof */
+  --proof-bg:   #EAF2FC;
+  --proof-bd:   rgba(10,92,92,.1);
+  /* Scrollbar */
+  --sb-track:   #EAF2FC;
+  /* Grid */
+  --grid-line:  rgba(10,92,92,.03);
+  /* Toggle */
+  --tog-bg:     rgba(13,128,128,.08);
+  --tog-bd:     rgba(13,128,128,.2);
+  --tog-tx:     var(--teal-700);
+}
+
+/* ── 4. GLOBAL ────────────────────────────────────────────── */
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg-page);
+  color:var(--tx-1);
+  overflow-x:hidden;
+  cursor:none;
+  transition:background-color .35s ease,color .25s ease;
+}
+/* Smooth transitions on all panels */
+nav,section,.tcard,.feat-card,.step-card,.aud-card,.aud-context,
+.prob-card,.mobile-proof,.hero-search,.cf-input,.ai-response,
+.aud-wrap,footer,.vm-section,.problem-sec,
+.aud-tabs-wrap,.step-card,.air-chip{
+  transition:background-color .35s ease,border-color .3s ease,color .25s ease;
+}
+/* No transition on animation elements */
+.cur,.cur-ring,.progress-bar,.sticky-cta,
+.at-dot,.ring1,.ring2,.ring3,.chk,.bike,.whl,
+.bc-w,.bc-ph,.pv-ring,.pv-pill,.pv-data,
+.geo-circle,.geo-blob{transition:none!important}
+
+/* Grid overlay */
+body::after{
+  content:'';position:fixed;inset:0;
+  background-image:
+    linear-gradient(var(--grid-line) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+  background-size:48px 48px;pointer-events:none;z-index:9998;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 100%);
+}
+
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--sb-track)}
+::-webkit-scrollbar-thumb{background:var(--ac-green);border-radius:10px}
+
+/* ── 5. CURSOR ─────────────────────────────────────────────── */
+.cur{position:fixed;width:10px;height:10px;background:var(--ac-green);border-radius:50%;
+  pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .1s}
+.cur-ring{position:fixed;width:36px;height:36px;border:1.5px solid rgba(46,204,113,.35);
+  border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);
+  transition:transform .28s cubic-bezier(.25,.46,.45,.94)}
+
+/* ── 6. PROGRESS BAR ──────────────────────────────────────── */
+.progress-bar{position:fixed;top:0;left:0;width:0%;height:3px;background:var(--ac-green);
+  z-index:300;transition:width .1s linear;box-shadow:0 0 8px rgba(46,204,113,.5)}
+
+/* ── 7. NAV ────────────────────────────────────────────────── */
+nav{
+  position:fixed;top:3px;left:0;right:0;z-index:200;
+  padding:0 56px;height:66px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--nav-bg);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--nav-border);
+  transition:background-color .35s,box-shadow .3s,border-color .3s;
+}
+nav.elevated{box-shadow:0 2px 24px rgba(20,184,166,.08)}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.nl-mark{display:flex;flex-direction:column;gap:3.5px}
+.nl-pill{height:5px;border-radius:2px;transition:background-color .35s}
+.nl-p1{width:22px;background:var(--ac-teal);opacity:.4;transform:rotate(-4deg);transform-origin:left}
+.nl-p2{width:22px;background:var(--ac-teal);opacity:.75;transform:rotate(-2deg);transform-origin:left}
+.nl-p3{width:22px;background:var(--ac-green)}
+.nl-word{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;letter-spacing:-.3px}
+.nl-w1{color:var(--tx-1);transition:color .25s}
+.nl-w2{color:var(--ac-green);transition:color .25s}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{text-decoration:none;color:var(--tx-2);font-size:13px;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--tx-1)}
+.nav-right{display:flex;align-items:center;gap:10px}
+.nav-cta{
+  background:var(--ac-green);color:var(--white);border:none;
+  padding:9px 22px;border-radius:4px;
+  font-family:'Syne',sans-serif;font-size:13px;font-weight:700;cursor:none;letter-spacing:-.2px;
+  box-shadow:0 0 20px rgba(46,204,113,.25);
+  transition:background .2s,transform .2s,box-shadow .2s;
+}
+.nav-cta:hover{background:var(--green-700);transform:translateY(-1px);box-shadow:0 0 28px rgba(46,204,113,.4)}
+
+/* Theme toggle */
+.theme-toggle{
+  display:flex;align-items:center;gap:7px;
+  background:var(--tog-bg);border:1px solid var(--tog-bd);
+  border-radius:4px;padding:7px 13px;
+  font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.2px;text-transform:uppercase;
+  color:var(--tog-tx);cursor:none;
+  transition:background .2s,border-color .2s,color .2s;
+}
+.theme-toggle:hover{background:var(--bg-raised)}
+.tt-icon{font-size:14px;line-height:1;display:block;transition:transform .5s ease}
+.theme-toggle:hover .tt-icon{transform:rotate(25deg)}
+
+/* Sticky CTA */
+.sticky-cta{
+  position:fixed;bottom:0;left:0;right:0;z-index:190;
+  background:var(--ac-green);padding:11px 24px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);
+  box-shadow:0 -4px 24px rgba(46,204,113,.2);
+}
+.sticky-cta.visible{transform:translateY(0)}
+.scta-text{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--white)}
+.scta-text span{font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,.65);font-weight:400;display:block;margin-top:1px}
+.scta-btn{
+  background:rgba(0,0,0,.25);color:var(--white);border:none;
+  padding:9px 18px;border-radius:4px;
+  font-family:'Syne',sans-serif;font-size:13px;font-weight:700;cursor:none;
+  white-space:nowrap;flex-shrink:0;transition:background .2s;
+}
+.scta-btn:hover{background:rgba(0,0,0,.4)}
+
+/* ── 8. HERO ────────────────────────────────────────────────── */
+.hero{
+  min-height:100vh;background:var(--bg-page);
+  display:grid;grid-template-columns:1fr 480px;
+  align-items:center;padding:88px 56px 80px;
+  position:relative;overflow:hidden;
+  transition:background-color .35s;
+}
+/* Fix hero mobile overflow */
+@media(max-width:1000px){
+  .hero{min-height:auto;padding:100px 24px 60px;overflow:visible}
+  .hero-h1{font-size:clamp(40px,10vw,64px);letter-spacing:-2px}
+  .hero-content{width:100%;max-width:100%}
+  .hero-sub{max-width:100%;font-size:15px}
+  .hero-search-wrap{max-width:100%}
+  .hero-tags{gap:6px}
+  .hero-stats{flex-wrap:wrap;gap:16px}
+  .hstat+.hstat{border-left:none;padding-left:0;border-top:1px solid var(--border);padding-top:12px;width:100%}
+}
+.hero-geo{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.geo-circle{position:absolute;border-radius:50%;border:1px solid var(--border)}
+.gc1{width:640px;height:640px;top:-200px;right:-100px;animation:geoSpin 40s linear infinite}
+.gc2{width:380px;height:380px;top:10%;right:5%;animation:geoSpin 28s linear infinite reverse}
+.gc3{width:180px;height:180px;top:35%;right:12%;animation:geoSpin 18s linear infinite;border-color:var(--ac-green-d)}
+@keyframes geoSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.geo-blob{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none}
+.gb1{width:500px;height:500px;background:radial-gradient(circle,rgba(10,92,92,.3) 0%,transparent 70%);top:-150px;left:-120px;animation:blobDrift 18s ease-in-out infinite alternate}
+.gb2{width:320px;height:320px;background:radial-gradient(circle,rgba(46,204,113,.07) 0%,transparent 70%);bottom:60px;right:100px;animation:blobDrift 22s ease-in-out infinite alternate}
+@keyframes blobDrift{to{transform:translate(40px,30px)}}
+
+/* Eyebrow */
+.hero-content{position:relative;z-index:2}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:10px;margin-bottom:28px;animation:fU .7s ease both;flex-wrap:wrap}
+.he-proof{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--ac-green-d);border:1px solid rgba(46,204,113,.28);
+  border-radius:4px;padding:6px 14px;
+  font-family:'DM Mono',monospace;font-size:10px;color:var(--ac-green);letter-spacing:.5px;
+}
+.he-proof-num{font-weight:700;font-size:12px}
+.he-sep{color:var(--tx-3);font-size:12px}
+.he-tag{font-family:'DM Mono',monospace;font-size:10px;color:var(--tx-2);letter-spacing:1.5px;text-transform:uppercase;display:flex;align-items:center;gap:7px}
+.he-dot{width:7px;height:7px;border-radius:50%;background:var(--ac-green);box-shadow:0 0 8px var(--ac-green);animation:blink 2s infinite;flex-shrink:0}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+@keyframes fU{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* Headline */
+.hero-h1{
+  font-family:'Syne',sans-serif;font-size:clamp(52px,6.8vw,92px);font-weight:800;
+  line-height:.92;letter-spacing:-3px;margin-bottom:24px;animation:fU .7s .08s ease both;
+}
+.hero-h1 .l1,.hero-h1 .l3{display:block;color:var(--tx-1);transition:color .25s}
+.hero-h1 .l2{display:block;color:var(--ac-green);position:relative;transition:color .25s}
+.hero-h1 .l2::after{
+  content:'';position:absolute;bottom:-4px;left:0;width:100%;height:3px;
+  background:linear-gradient(90deg,var(--ac-green),var(--ac-teal));border-radius:2px;
+  animation:underlineIn .8s .5s ease both;transform-origin:left;
+}
+@keyframes underlineIn{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.hero-sub{font-size:16px;line-height:1.78;color:var(--tx-2);max-width:480px;margin-bottom:36px;animation:fU .7s .15s ease both;transition:color .25s}
+.hero-sub strong{color:var(--tx-1);font-weight:500;transition:color .25s}
+
+/* Search */
+.hero-search-wrap{margin-bottom:14px;animation:fU .7s .22s ease both;max-width:520px}
+.hero-search{
+  background:var(--srch-bg);border:1.5px solid var(--srch-bd);
+  border-radius:6px;padding:13px 16px;display:flex;align-items:center;gap:10px;
+  transition:border-color .2s,box-shadow .2s,background-color .35s;
+}
+.hero-search:focus-within{border-color:var(--ac-green);box-shadow:0 0 0 3px var(--ac-green-d)}
+.hs-ai{
+  font-family:'DM Mono',monospace;font-size:9px;color:var(--ac-green);
+  background:var(--ac-green-d);border:1px solid rgba(46,204,113,.22);
+  border-radius:3px;padding:2px 7px;letter-spacing:.8px;text-transform:uppercase;flex-shrink:0;
+}
+.hs-input{flex:1;background:transparent;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--srch-tx);transition:color .25s}
+.hs-input::placeholder{color:var(--srch-ph)}
+.hs-btn{
+  background:var(--ac-green);color:var(--white);border:none;border-radius:4px;
+  padding:9px 20px;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;
+  cursor:none;box-shadow:0 4px 16px rgba(46,204,113,.2);white-space:nowrap;
+  transition:background .15s,box-shadow .15s;
+}
+.hs-btn:hover{background:var(--green-700)}
+.ai-response{
+  max-height:0;overflow:hidden;opacity:0;
+  background:var(--ai-bg);border:1px solid var(--ai-bd);border-top:none;
+  border-radius:0 0 6px 6px;margin-top:-2px;
+  transition:max-height .4s cubic-bezier(.4,0,.2,1),opacity .3s ease;
+}
+.ai-response.visible{max-height:120px;opacity:1}
+.air-typing{display:flex;gap:4px;align-items:center;padding:11px 16px}
+.at-dot{width:6px;height:6px;border-radius:50%;background:var(--ac-green);opacity:.4;animation:atD 1.2s ease-in-out infinite}
+.at-dot:nth-child(2){animation-delay:.2s}.at-dot:nth-child(3){animation-delay:.4s}
+@keyframes atD{0%,80%,100%{transform:scale(.5);opacity:.3}40%{transform:scale(1);opacity:1}}
+.ai-response-inner{padding:11px 16px;display:flex;align-items:flex-start;gap:10px;display:none}
+.air-icon{width:24px;height:24px;border-radius:4px;background:var(--ac-green-d);border:1px solid rgba(46,204,113,.22);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+.air-label{font-family:'DM Mono',monospace;font-size:8px;color:var(--ac-green);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px;display:flex;align-items:center;gap:4px}
+.air-dot{width:4px;height:4px;border-radius:50%;background:var(--ac-green);animation:blink .8s infinite}
+.air-text{font-size:12px;color:var(--tx-2);line-height:1.5;margin-bottom:7px;transition:color .25s}
+.air-chips{display:flex;gap:6px;flex-wrap:wrap}
+.air-chip{font-size:10px;padding:3px 10px;border-radius:3px;background:var(--ac-green-d);border:1px solid rgba(46,204,113,.2);color:var(--ac-green);cursor:none;transition:background .2s}
+.air-chip:hover{background:rgba(46,204,113,.2)}
+.hero-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:44px;animation:fU .7s .29s ease both}
+.htag{padding:6px 13px;border-radius:4px;background:var(--htag-bg);border:1px solid var(--htag-bd);font-size:12px;color:var(--htag-tx);cursor:none;transition:all .2s}
+.htag:hover{background:var(--htag-hbg);color:var(--htag-htx);border-color:var(--ac-teal)}
+.hero-stats{display:flex;gap:0;border-top:1px solid var(--border);padding-top:36px;animation:fU .7s .36s ease both}
+.hstat{flex:1;transition:border-color .3s}
+.hstat+.hstat{border-left:1px solid var(--border);padding-left:28px}
+.hstat-num{font-family:'Syne',sans-serif;font-size:clamp(28px,3.2vw,44px);font-weight:800;letter-spacing:-2px;color:var(--tx-1);line-height:1;transition:color .25s}
+.hstat-num.lemon{color:var(--ac-green)}
+.hstat-label{font-size:11px;color:var(--tx-2);margin-top:4px;line-height:1.4;transition:color .25s}
+
+/* Hero visual */
+.hero-visual{position:relative;z-index:2;display:flex;align-items:center;justify-content:center}
+.pill-viz{position:relative;width:400px;height:420px}
+.pv-ring{position:absolute;border-radius:50%;border:1px solid var(--border)}
+.pv-r1{width:360px;height:360px;top:30px;left:20px;animation:pvSpin 20s linear infinite}
+.pv-r2{width:260px;height:260px;top:80px;left:70px;animation:pvSpin 14s linear infinite reverse}
+.pv-r3{width:160px;height:160px;top:130px;left:120px;border-color:var(--ac-green-d);animation:pvSpin 10s linear infinite}
+@keyframes pvSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.pv-pill{position:absolute;border-radius:100px;display:flex;align-items:center;justify-content:center}
+.pvp1{width:180px;height:60px;background:var(--ac-teal-d);border:1px solid var(--ac-teal);top:50px;left:110px;transform:rotate(-8deg);animation:pvFloat1 5s ease-in-out infinite}
+.pvp2{width:200px;height:60px;background:rgba(20,184,166,.1);border:1.5px solid var(--ac-teal);top:140px;left:100px;transform:rotate(-2deg);animation:pvFloat2 6s ease-in-out infinite}
+.pvp3{width:180px;height:60px;background:var(--ac-green-d);border:2px solid var(--ac-green);bottom:100px;left:110px;transform:rotate(3deg);animation:pvFloat3 7s ease-in-out infinite;box-shadow:0 0 20px rgba(46,204,113,.12)}
+@keyframes pvFloat1{0%,100%{transform:rotate(-8deg) translateY(0)}50%{transform:rotate(-8deg) translateY(-8px)}}
+@keyframes pvFloat2{0%,100%{transform:rotate(-2deg) translateY(0)}50%{transform:rotate(-2deg) translateY(-12px)}}
+@keyframes pvFloat3{0%,100%{transform:rotate(3deg) translateY(0)}50%{transform:rotate(3deg) translateY(-10px)}}
+.pvp-text{font-family:'Syne',sans-serif;font-weight:800;font-size:13px;letter-spacing:-.3px}
+.pvp1 .pvp-text,.pvp2 .pvp-text{color:var(--ac-teal)}
+.pvp3 .pvp-text{color:var(--ac-green)}
+.pv-data{position:absolute;font-family:'DM Mono',monospace;font-size:10px;background:var(--bg-card);border:1px solid var(--border);border-radius:4px;padding:5px 10px;white-space:nowrap;color:var(--tx-2);transition:background-color .35s,border-color .3s,color .25s}
+.pvd1{top:20px;right:20px;color:var(--ac-green);animation:pvData 4s ease-in-out infinite}
+.pvd2{bottom:140px;left:0;animation:pvData 4s .8s ease-in-out infinite}
+.pvd3{bottom:60px;right:10px;color:var(--ac-green);animation:pvData 4s 1.6s ease-in-out infinite}
+@keyframes pvData{0%,100%{opacity:.6;transform:translateY(0)}50%{opacity:1;transform:translateY(-4px)}}
+
+/* Mobile proof */
+.mobile-proof{display:none;background:var(--proof-bg);border-top:1px solid var(--proof-bd);padding:18px 24px;transition:background-color .35s,border-color .3s}
+.mp-inner{display:flex;flex-direction:column;gap:10px}
+.mp-stat-row{display:flex;gap:0}
+.mp-stat{flex:1;text-align:center;padding:10px 6px;border-right:1px solid var(--border)}
+.mp-stat:last-child{border-right:none}
+.mp-num{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--ac-green);line-height:1;transition:color .25s}
+.mp-label{font-size:10px;color:var(--tx-2);margin-top:3px;line-height:1.3;transition:color .25s}
+.mp-trust{display:flex;gap:7px}
+.mp-badge{flex:1;background:var(--ac-teal-d);border:1px solid var(--border);border-radius:4px;padding:10px 6px;text-align:center;transition:background-color .35s,border-color .3s}
+.mpb-icon{font-size:15px;margin-bottom:3px}
+.mpb-title{font-size:10px;font-weight:600;color:var(--tx-2);transition:color .25s}
+
+/* ── 9. SECTION HELPERS ────────────────────────────────────── */
+section.sec{padding:88px 56px;position:relative;background:var(--bg-page);transition:background-color .35s}
+.sec-ey{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:9px}
+.sec-ey::before{content:'';width:16px;height:2px;border-radius:1px}
+.sec-ey.lemon{color:var(--ac-green)}.sec-ey.lemon::before{background:var(--ac-green)}
+.sec-ey.teal{color:var(--ac-teal)}.sec-ey.teal::before{background:var(--ac-teal)}
+.sec-ey.ink{color:var(--tx-2)}.sec-ey.ink::before{background:var(--ac-teal)}
+.sec-ey.lt{color:var(--tx-2)}.sec-ey.lt::before{background:var(--tx-2)}
+.sec-h2{font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,52px);font-weight:800;letter-spacing:-2px;line-height:1.04;margin-bottom:14px;color:var(--tx-1);transition:color .25s}
+.sec-h2 em{font-style:normal;color:var(--ac-green);transition:color .25s}
+.sec-sub{font-size:15px;line-height:1.78;color:var(--tx-2);transition:color .25s}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s ease}
+.revealed{opacity:1;transform:none}
+
+/* ── 10. PURPOSE ────────────────────────────────────────────── */
+.vm-section{
+  background:var(--vm-bg);padding:88px 56px;text-align:center;
+  position:relative;overflow:hidden;transition:background-color .35s;
+}
+.vm-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 50%,rgba(20,184,166,.1),transparent);pointer-events:none}
+.vm-geo{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.vm-geo::before{content:'';position:absolute;width:400px;height:1px;background:rgba(255,255,255,.05);top:50%;left:50%;transform:translate(-50%,-50%)}
+.vm-geo::after{content:'';position:absolute;width:1px;height:400px;background:rgba(255,255,255,.05);top:50%;left:50%;transform:translate(-50%,-50%)}
+.vm-inner{position:relative;z-index:2;max-width:680px;margin:0 auto}
+.vm-mark{display:flex;flex-direction:column;gap:7px;align-items:center;margin-bottom:26px}
+.vm-pill{height:7px;border-radius:2px}
+.vm-1{width:80px;background:var(--teal-500);opacity:.4;transform:rotate(-3deg)}
+.vm-2{width:80px;background:var(--teal-500);opacity:.7;transform:rotate(-1.5deg)}
+.vm-3{width:80px;background:var(--green-500)}
+.vm-eyebrow{font-family:'DM Mono',monospace;font-size:9px;color:var(--vm-eyebrow);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:10px;transition:color .25s}
+.vm-eyebrow::before,.vm-eyebrow::after{content:'';flex:1;max-width:44px;height:1px;background:rgba(255,255,255,.15)}
+.vm-vision{font-family:'Syne',sans-serif;font-size:clamp(32px,5vw,58px);font-weight:800;letter-spacing:-2.5px;line-height:1.02;color:var(--vm-tx);margin-bottom:8px;transition:color .25s}
+.vm-vision em{font-style:normal;color:var(--green-300)}
+.vm-vision-sub{font-family:'DM Mono',monospace;font-size:9px;color:var(--vm-tx-sub);letter-spacing:2px;text-transform:uppercase;margin-bottom:22px;transition:color .25s}
+.vm-divider{width:40px;height:2px;background:linear-gradient(90deg,var(--teal-300),var(--green-300));margin:0 auto 20px}
+.vm-mission-label{font-family:'DM Mono',monospace;font-size:9px;color:var(--vm-tx-sub);letter-spacing:2px;text-transform:uppercase;margin-bottom:9px;transition:color .25s}
+.vm-mission{font-family:'Syne',sans-serif;font-size:clamp(17px,2.2vw,24px);font-weight:600;color:var(--vm-tx-sub);line-height:1.5;max-width:520px;margin:0 auto 26px;transition:color .25s}
+.vm-mission strong{color:var(--vm-tx);font-weight:700;transition:color .25s}
+.vm-tags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.vm-tag{font-family:'DM Mono',monospace;font-size:9px;border-radius:3px;padding:5px 12px;letter-spacing:.8px;text-transform:uppercase}
+.vm-tag.t{color:var(--teal-300);background:rgba(94,234,212,.1);border:1px solid rgba(94,234,212,.22)}
+.vm-tag.l{color:var(--green-300);background:rgba(88,214,141,.1);border:1px solid rgba(88,214,141,.22)}
+
+/* ── 11. PROBLEM ────────────────────────────────────────────── */
+.problem-sec{
+  background:var(--prob-bg);padding:76px 56px;
+  position:relative;overflow:hidden;transition:background-color .35s;
+}
+.problem-sec::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-45deg,transparent,transparent 40px,var(--prob-stripe) 40px,var(--prob-stripe) 41px);pointer-events:none}
+.problem-eyebrow{font-family:'DM Mono',monospace;font-size:10px;color:var(--tx-2);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px;position:relative;z-index:2;transition:color .25s}
+.problem-eyebrow::before{content:'';width:16px;height:2px;background:var(--ac-green)}
+.problem-title{font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,50px);font-weight:800;letter-spacing:-2px;color:var(--prob-tx);line-height:1.04;margin-bottom:36px;position:relative;z-index:2;transition:color .25s}
+.problem-title em{font-style:normal;color:var(--ac-green);transition:color .25s}
+.problem-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;position:relative;z-index:2}
+.prob-card{background:var(--prob-card);padding:28px 22px;border-top:3px solid;transition:background-color .35s}
+.prob-card:hover{background:var(--prob-card-h)}
+.prob-card:nth-child(1){border-top-color:var(--ac-green)}
+.prob-card:nth-child(2){border-top-color:var(--ac-teal)}
+.prob-card:nth-child(3){border-top-color:var(--ac-teal)}
+.prob-card:nth-child(4){border-top-color:var(--ac-green)}
+.prob-num{font-family:'Syne',sans-serif;font-size:48px;font-weight:800;letter-spacing:-3px;margin-bottom:6px;line-height:1;transition:color .25s}
+.prob-card:nth-child(1) .prob-num,.prob-card:nth-child(4) .prob-num{color:var(--ac-green)}
+.prob-card:nth-child(2) .prob-num,.prob-card:nth-child(3) .prob-num{color:var(--ac-teal)}
+.prob-title-text{font-size:13px;font-weight:600;color:var(--prob-tx);margin-bottom:6px;transition:color .25s}
+.prob-desc{font-size:12px;color:var(--prob-desc);line-height:1.6;transition:color .25s}
+
+/* ── 12. HOW IT WORKS ──────────────────────────────────────── */
+/* SVG animations */
+.ring{fill:none;stroke:var(--ac-teal);stroke-width:2;opacity:0}
+.ring1{animation:svgRing 2.4s ease-out infinite}.ring2{animation:svgRing 2.4s .7s ease-out infinite}.ring3{animation:svgRing 2.4s 1.4s ease-out infinite}
+@keyframes svgRing{0%{r:7;opacity:.85}100%{r:32;opacity:0}}
+.card1{animation:c1 2s ease-in-out infinite alternate}
+.card2{animation:c2 2s .3s ease-in-out infinite alternate}
+.card3{animation:c3 2s .6s ease-in-out infinite alternate}
+@keyframes c1{0%{transform:translateY(0)}100%{transform:translateY(-3px)}}
+@keyframes c2{0%{transform:translateY(0)}100%{transform:translateY(-5px)}}
+@keyframes c3{0%{transform:translateY(0)}100%{transform:translateY(-7px)}}
+.chk{animation:chkA .9s 1.3s ease-out infinite}
+@keyframes chkA{0%,85%{opacity:0;transform:scale(.5)}45%{opacity:1;transform:scale(1)}100%{opacity:0}}
+.bike{animation:bikeA 1.8s ease-in-out infinite alternate}
+@keyframes bikeA{0%{transform:translateX(-4px)}100%{transform:translateX(4px)}}
+.whl{animation:whlA .5s linear infinite}
+@keyframes whlA{from{transform-box:fill-box;transform-origin:center;transform:rotate(0deg)}to{transform-box:fill-box;transform-origin:center;transform:rotate(360deg)}}
+
+.steps-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;margin-top:44px;background:var(--border)}
+.step-card{background:var(--step-bg);padding:36px 28px;position:relative;overflow:hidden;border-top:3px solid transparent;transition:background-color .35s,border-color .3s}
+.step-card:nth-child(1){border-top-color:var(--ac-teal)}
+.step-card:nth-child(2){border-top-color:var(--ac-teal)}
+.step-card:nth-child(3){border-top-color:var(--ac-green)}
+.step-card:hover{background:var(--step-h)}
+.step-num{font-family:'Syne',sans-serif;font-size:72px;font-weight:800;color:var(--step-num);position:absolute;top:10px;right:14px;letter-spacing:-4px;line-height:1;transition:color .3s}
+.step-svg-wrap{width:72px;height:72px;margin-bottom:18px;position:relative;z-index:1}
+.step-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:10px;color:var(--tx-1);position:relative;z-index:1;letter-spacing:-.5px;transition:color .25s}
+.step-card:nth-child(3) .step-title{color:var(--ac-green)}
+.step-desc{font-size:13px;color:var(--tx-2);line-height:1.7;position:relative;z-index:1;transition:color .25s}
+
+/* ── 13. FEATURES ───────────────────────────────────────────── */
+.feat-row-primary{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-bottom:2px;background:var(--border)}
+.feat-row-secondary{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border)}
+.feat-card{background:var(--feat-bg);padding:28px;border-left:3px solid transparent;transition:background-color .35s,border-left-color .3s}
+.feat-card.primary{border-left-color:var(--ac-teal)}
+.feat-card.primary:hover{background:var(--feat-h)}
+.feat-card.secondary{border-left-color:var(--ac-green)}
+.feat-card.secondary:hover{background:var(--feat-h)}
+.feat-badge{display:inline-flex;align-items:center;gap:5px;font-family:'DM Mono',monospace;font-size:8px;border-radius:3px;padding:3px 9px;margin-bottom:10px;letter-spacing:.8px;text-transform:uppercase;border:1px solid;transition:background-color .35s,border-color .3s,color .25s}
+.feat-badge.teal{color:var(--ac-teal);background:var(--ac-teal-d);border-color:rgba(20,184,166,.22)}
+.feat-badge.lemon{color:var(--ac-green);background:var(--ac-green-d);border-color:rgba(46,204,113,.22)}
+.feat-demo{height:72px;border-radius:4px;margin-bottom:14px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;transition:background-color .35s,border-color .3s}
+.feat-card.primary .feat-demo{background:var(--feat-demo-t);border:1px solid var(--feat-demo-b)}
+.feat-card.secondary .feat-demo{background:var(--feat-demo-g);border:1px solid var(--feat-demo-gb)}
+.typing-text{font-family:'DM Mono',monospace;font-size:11px;color:var(--ac-teal);overflow:hidden;white-space:nowrap;animation:typeText 3.2s steps(28) infinite}
+@keyframes typeText{0%{width:0}60%{width:100%}85%{width:100%}100%{width:0}}
+.suggest-chip{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);background:var(--ac-green-d);border:1px solid rgba(46,204,113,.28);border-radius:3px;padding:4px 12px;font-size:10px;color:var(--ac-green);white-space:nowrap;animation:chipA 3.2s ease-in-out infinite;transition:color .25s}
+@keyframes chipA{0%,32%{opacity:0;transform:translateX(-50%) translateY(7px)}46%,84%{opacity:1;transform:translateX(-50%) translateY(0)}100%{opacity:0}}
+.bc-c{width:12px;height:12px;border-radius:50%;background:var(--ac-teal);box-shadow:0 0 6px var(--ac-teal)}
+.bc-w{position:absolute;width:12px;height:12px;border-radius:50%;border:1.5px solid rgba(20,184,166,.4);animation:bcWL 2s ease-out infinite}
+.bc-w:nth-child(2){animation-delay:.5s}.bc-w:nth-child(3){animation-delay:1s}.bc-w:nth-child(4){animation-delay:1.5s}
+@keyframes bcWL{0%{width:12px;height:12px;opacity:1}100%{width:70px;height:70px;opacity:0;margin:-29px}}
+.bc-ph{position:absolute;font-size:12px;animation:pharmP .4s cubic-bezier(.34,1.56,.64,1) both}
+.bc-ph:nth-child(5){top:9px;left:13px;animation-delay:.8s}.bc-ph:nth-child(6){top:9px;right:13px;animation-delay:1.1s}
+.bc-ph:nth-child(7){bottom:9px;left:19px;animation-delay:1.4s}.bc-ph:nth-child(8){bottom:9px;right:19px;animation-delay:1.7s}
+@keyframes pharmP{from{opacity:0;transform:scale(0)}to{opacity:1;transform:scale(1)}}
+.notif-lt{background:var(--bg-raised);border:1px solid var(--border);border-radius:6px;padding:9px 10px;width:88%;display:flex;gap:7px;align-items:flex-start;animation:notifSlide 3s ease-in-out infinite;transition:background-color .35s,border-color .3s}
+@keyframes notifSlide{0%{opacity:0;transform:translateY(-10px)}20%,75%{opacity:1;transform:translateY(0)}95%,100%{opacity:0;transform:translateY(5px)}}
+.notif-ic{width:22px;height:22px;border-radius:4px;background:var(--ac-teal-d);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+.nt-t{font-size:10px;font-weight:600;color:var(--ac-teal);transition:color .25s}
+.nt-s{font-size:9px;color:var(--tx-2);transition:color .25s}
+.qr-lt{width:36px;height:36px;background:var(--bg-raised);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:17px;border:1px solid var(--border);transition:background-color .35s,border-color .3s}
+.auth-b-lt{width:44px;height:2px;background:linear-gradient(90deg,transparent,var(--ac-teal),transparent);animation:authSc 1.5s ease-in-out infinite}
+@keyframes authSc{0%{transform:translateY(-17px)}100%{transform:translateY(17px)}}
+.auth-ok-lt{background:var(--ac-green-d);border:1px solid rgba(46,204,113,.25);border-radius:3px;padding:3px 8px;font-family:'DM Mono',monospace;font-size:9px;color:var(--ac-green);display:inline-flex;margin-top:5px;animation:authBg 1.5s .8s ease-in-out infinite}
+@keyframes authBg{0%{opacity:0}50%,100%{opacity:1}}
+.feat-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:var(--tx-1);margin-bottom:6px;letter-spacing:-.4px;transition:color .25s}
+.feat-desc{font-size:12px;color:var(--tx-2);line-height:1.65;transition:color .25s}
+.feat-tag{display:inline-flex;align-items:center;gap:5px;margin-top:9px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.8px;text-transform:uppercase;padding:4px 9px;border-radius:3px;border:1px solid}
+
+/* ── 14. TESTIMONIALS ──────────────────────────────────────── */
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:44px}
+.tcard{background:var(--testi-bg);padding:32px;border:1px solid var(--border);border-top:3px solid transparent;border-radius:8px;transition:background-color .35s,border-color .3s}
+.tcard:nth-child(1){border-top-color:var(--ac-green)}
+.tcard:nth-child(2){border-top-color:var(--ac-teal)}
+.tcard:nth-child(3){border-top-color:var(--ac-teal)}
+.tcard:hover{background:var(--testi-h);border-color:var(--border-sub)}
+.tc-q{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--testi-q);line-height:1.68;margin-bottom:20px;font-style:italic;transition:color .25s}
+.tc-auth{display:flex;align-items:center;gap:10px;padding-top:14px;border-top:1px solid var(--testi-bd);transition:border-color .3s}
+.ta-av{width:32px;height:32px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;color:white;flex-shrink:0}
+.ta-name{font-size:12px;font-weight:600;color:var(--testi-name);font-family:'Syne',sans-serif;transition:color .25s}
+.ta-sub{font-size:10px;color:var(--tx-2);margin-top:1px;transition:color .25s}
+
+/* ── 15. AUDIENCE ───────────────────────────────────────────── */
+.aud-wrap{background:var(--aud-bg);padding:76px 56px;transition:background-color .35s}
+.aud-tabs{display:flex;gap:0;margin-bottom:32px;background:var(--aud-tabs);border:1px solid var(--border);border-radius:4px;padding:3px;width:fit-content;transition:background-color .35s,border-color .3s}
+.aud-tab{padding:9px 24px;border-radius:3px;font-size:13px;font-weight:600;cursor:none;transition:all .22s;color:var(--tx-2);border:none;background:transparent;font-family:'Syne',sans-serif;display:flex;align-items:center;gap:7px;letter-spacing:-.2px}
+.aud-tab:hover{color:var(--tx-1)}
+.aud-tab.active{background:var(--ac-green);color:var(--white)}
+.aud-tab.active.teal-tab{background:var(--ac-teal);color:var(--white)}
+.aud-panel{display:none;animation:fU .38s ease both}
+.aud-panel.active{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+.aud-card{border-radius:4px;padding:28px;border:1px solid var(--border);background:var(--aud-card);transition:background-color .35s,border-color .3s}
+.aud-card::before{content:'';display:block;height:3px;margin-bottom:20px}
+.aud-patient::before{background:var(--ac-green)}
+.aud-pharm::before{background:var(--ac-teal)}
+.aud-icon{font-size:26px;margin-bottom:10px}
+.aud-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:3px;color:var(--aud-tx);letter-spacing:-.5px;transition:color .25s}
+.aud-role{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;color:var(--tx-2);transition:color .25s}
+.aud-features{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
+.af{display:flex;align-items:flex-start;gap:9px;font-size:13px;color:var(--aud-af);line-height:1.5;transition:color .25s}
+.af-dot{width:6px;height:6px;border-radius:1px;flex-shrink:0;margin-top:5px}
+.aud-cta{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;padding:11px 20px;border-radius:4px;cursor:none;transition:all .2s;text-decoration:none;border:none;font-family:'Syne',sans-serif;letter-spacing:-.2px}
+.aud-patient .aud-cta{background:var(--ac-green);color:var(--white);box-shadow:0 4px 14px rgba(46,204,113,.2)}
+.aud-patient .aud-cta:hover{background:var(--green-700)}
+.aud-pharm .aud-cta{background:var(--ac-teal);color:var(--white);box-shadow:0 4px 14px rgba(20,184,166,.2)}
+.aud-pharm .aud-cta:hover{background:var(--teal-700)}
+.aud-context{background:var(--aud-ctx);border:1px solid var(--border);border-radius:4px;padding:24px;transition:background-color .35s,border-color .3s}
+.aud-context-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--tx-1);margin-bottom:14px;letter-spacing:-.3px;transition:color .25s}
+.aud-stat{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--aud-bd);transition:border-color .3s}
+.aud-stat:last-child{border-bottom:none;padding-bottom:0}
+.as-num{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;flex-shrink:0;width:76px;line-height:1.1;letter-spacing:-.5px;transition:color .25s}
+.as-label{font-size:12px;color:var(--tx-2);line-height:1.45;padding-top:2px;transition:color .25s}
+
+/* ── 16. CTA ────────────────────────────────────────────────── */
+.cta-sec{background:var(--cta-bg);padding:88px 56px;text-align:center;position:relative;overflow:hidden}
+.cta-sec::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 100%,rgba(46,204,113,.07),transparent);pointer-events:none}
+.cta-geo{position:absolute;width:600px;height:600px;border-radius:50%;border:1px solid rgba(46,204,113,.06);top:50%;left:50%;transform:translate(-50%,-50%)}
+.cta-sec>*{position:relative;z-index:2}
+.cta-mark{display:flex;flex-direction:column;gap:7px;align-items:center;margin-bottom:24px}
+.cm-pill{height:8px;border-radius:2px}
+.cm-1{width:84px;background:var(--teal-300);opacity:.4;transform:rotate(-3deg)}
+.cm-2{width:84px;background:var(--teal-300);opacity:.7;transform:rotate(-1.5deg)}
+.cm-3{width:84px;background:var(--green-500)}
+.cta-h2{font-family:'Syne',sans-serif;font-size:clamp(40px,5.8vw,70px);font-weight:800;letter-spacing:-3px;line-height:.96;margin-bottom:12px;color:var(--white)}
+.cta-h2 em{font-style:normal;color:var(--green-300)}
+.cta-sub{font-size:15px;color:rgba(255,255,255,.65);max-width:360px;margin:0 auto 20px;line-height:1.7}
+.cta-urgency{display:inline-flex;align-items:center;gap:9px;background:rgba(46,204,113,.1);border:1px solid rgba(46,204,113,.25);border-radius:4px;padding:8px 16px;margin-bottom:28px;font-size:13px;color:rgba(255,255,255,.85)}
+.cu-dot{width:7px;height:7px;border-radius:50%;background:var(--green-300);box-shadow:0 0 6px var(--green-300);animation:blink 2s infinite;flex-shrink:0}
+.cu-num{font-family:'Syne',sans-serif;font-weight:700;color:var(--green-300);font-size:14px}
+.cta-form{display:flex;gap:8px;max-width:440px;margin:0 auto 11px}
+.cf-input{flex:1;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);border-radius:4px;padding:13px 16px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--white);outline:none;transition:border-color .2s,box-shadow .2s}
+.cf-input::placeholder{color:rgba(255,255,255,.35)}
+.cf-input:focus{border-color:var(--green-300);box-shadow:0 0 0 3px rgba(88,214,141,.15)}
+.cf-btn{background:var(--green-500);color:var(--white);border:none;border-radius:4px;padding:13px 24px;font-family:'Syne',sans-serif;font-size:15px;font-weight:800;cursor:none;box-shadow:0 6px 24px rgba(46,204,113,.2);transition:transform .2s,box-shadow .2s,background .2s;white-space:nowrap;letter-spacing:-.3px}
+.cf-btn:hover{background:var(--green-700);transform:translateY(-2px);box-shadow:0 10px 32px rgba(46,204,113,.3)}
+.cta-privacy{font-size:11px;color:rgba(255,255,255,.45)}
+
+/* ── 17. FOOTER ─────────────────────────────────────────────── */
+footer{background:var(--foot-bg);padding:52px 56px 36px;border-top:1px solid rgba(20,184,166,.1);transition:background-color .35s}
+.footer-top{display:grid;grid-template-columns:280px 1fr 1fr 1fr;gap:36px;margin-bottom:40px}
+.fb-logo{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.fb-m{display:flex;flex-direction:column;gap:3.5px}
+.fb-p{height:5px;border-radius:2px}
+.fb-p1{width:20px;background:var(--teal-500);opacity:.4}
+.fb-p2{width:20px;background:var(--teal-500);opacity:.7}
+.fb-p3{width:20px;background:var(--green-500)}
+.fb-wrd{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;letter-spacing:-.3px}
+.fb-w1{color:rgba(255,255,255,.85)}.fb-w2{color:var(--green-300)}
+.fb-tag{font-size:12px;color:rgba(255,255,255,.35);margin-bottom:5px}
+.fb-vision{font-size:10px;color:rgba(88,214,141,.3);margin-bottom:16px;font-family:'DM Mono',monospace;letter-spacing:.4px}
+.fb-badges{display:flex;gap:6px}
+.fbb{font-size:10px;color:rgba(255,255,255,.3);border-radius:3px;padding:3px 9px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
+.fc-title{font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,.3);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+.flinks{display:flex;flex-direction:column;gap:6px}
+.flinks a{font-size:13px;color:var(--foot-link);text-decoration:none;transition:color .2s}
+.flinks a:hover{color:var(--teal-300)}
+.footer-bot{display:flex;align-items:center;justify-content:space-between;padding-top:20px;border-top:1px solid rgba(255,255,255,.06);font-size:12px;color:var(--foot-muted)}
+.fbot-links{display:flex;gap:18px}
+.fbot-links a{color:var(--foot-muted);text-decoration:none;transition:color .2s}
+.fbot-links a:hover{color:var(--teal-300)}
+
+/* ── 18. RESPONSIVE ─────────────────────────────────────────── */
+@media(max-width:1000px){
+  nav{padding:0 20px}
+  .nav-links{display:none}
+  .hero{grid-template-columns:1fr;padding:76px 24px 56px}
+  .hero-visual{display:none}
+  .mobile-proof{display:block}
+  .hero-stats{display:none}
+  section.sec{padding:60px 24px}
+  .vm-section,.cta-sec,.aud-wrap,.problem-sec{padding:60px 24px}
+  footer{padding:44px 24px}
+  .footer-top{grid-template-columns:1fr 1fr}
+  .feat-row-primary,.feat-row-secondary{grid-template-columns:1fr}
+  .steps-grid,.tgrid{grid-template-columns:1fr}
+  .aud-panel.active{grid-template-columns:1fr}
+  .cta-form{flex-direction:column}
+  .problem-grid{grid-template-columns:1fr 1fr}
+  body{padding-bottom:64px}
+}
+@media(max-width:600px){
+  .problem-grid{grid-template-columns:1fr}
+  .nav-right{gap:7px}
+  .nav-cta{padding:7px 14px;font-size:12px}
+  .theme-toggle{padding:6px 10px}
+  .tt-label{display:none}
+}
+
+/* CTA two-field form */
+.cta-form-wrap{max-width:480px;margin:0 auto 11px;display:flex;flex-direction:column;gap:10px}
+.cta-form-inputs{display:flex;gap:10px}
+.cf-btn-full{width:100%;background:var(--green-500);color:var(--white);border:none;border-radius:4px;
+  padding:14px 24px;font-family:'Syne',sans-serif;font-size:15px;font-weight:800;cursor:none;
+  box-shadow:0 6px 24px rgba(46,204,113,.2);transition:transform .2s,box-shadow .2s,background .2s;
+  letter-spacing:-.3px;}
+.cf-btn-full:hover{background:var(--green-700);transform:translateY(-2px);box-shadow:0 10px 32px rgba(46,204,113,.3)}
+@media(max-width:600px){.cta-form-inputs{flex-direction:column}}
+
+/* S7 light mode audience contrast — black bg with green accents */
+[data-theme="light"] .aud-wrap{background:#071212}
+[data-theme="light"] .aud-title{color:#FFFFFF}
+[data-theme="light"] .aud-role{color:rgba(255,255,255,.55)}
+[data-theme="light"] .af{color:rgba(255,255,255,.85)}
+[data-theme="light"] .aud-context-title{color:rgba(255,255,255,.8)}
+[data-theme="light"] .as-label{color:rgba(255,255,255,.5)}
+[data-theme="light"] .aud-stat{border-bottom-color:rgba(255,255,255,.08)}
+[data-theme="light"] .aud-card{background:#0F1D2E;border-color:rgba(46,204,113,.2)}
+[data-theme="light"] .aud-patient::before{background:var(--green-500)}
+[data-theme="light"] .aud-pharm::before{background:#14B8A6}
+[data-theme="light"] .aud-context{background:rgba(46,204,113,.06);border-color:rgba(46,204,113,.15)}
+[data-theme="light"] .aud-tabs{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1)}
+[data-theme="light"] .aud-tab{color:rgba(255,255,255,.45)}
+[data-theme="light"] .aud-tab:hover{color:rgba(255,255,255,.8)}
+[data-theme="light"] .aud-tab.active{background:var(--green-500);color:#071212}
+[data-theme="light"] .aud-tab.active.teal-tab{background:#14B8A6;color:#071212}
+[data-theme="light"] h2[style*="color:var(--lemon2)"]{color:var(--green-500)!important}
+
+
+/* Testimonial context tag */
+.tc-context{
+  font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.2px;text-transform:uppercase;
+  color:var(--ac-teal);background:var(--ac-teal-d);border:1px solid rgba(20,184,166,.2);
+  border-radius:3px;padding:3px 9px;display:inline-block;margin-bottom:14px;
+}
+/* Audience heading transition */
+#audHeading{transition:opacity .25s ease}
+#audHeading.switching{opacity:0}
+
+/* Fix tgrid on mobile */
+@media(max-width:1000px){
+  .tgrid{gap:14px}
+}
+
+
+/* ── HERO REQUEST FORM ─────────────────────────────────────── */
+.hero-req-form{
+  background:var(--srch-bg);border:1.5px solid var(--srch-bd);
+  border-radius:8px;padding:20px;
+  display:flex;flex-direction:column;gap:14px;
+  max-width:520px;margin-bottom:14px;
+  transition:border-color .2s,background-color .35s;
+}
+.hero-req-form:focus-within{border-color:var(--ac-green);box-shadow:0 0 0 3px var(--ac-green-d)}
+.hrf-row{display:flex;gap:12px}
+.hrf-field{display:flex;flex-direction:column;gap:5px;flex:1}
+.hrf-field-sm{max-width:110px;flex:none}
+.hrf-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.2px;text-transform:uppercase;color:var(--tx-2);transition:color .25s}
+.hrf-optional{color:var(--tx-3);font-size:8px;letter-spacing:.5px}
+.hrf-input{
+  background:transparent;border:1px solid var(--border);
+  border-radius:4px;padding:9px 11px;
+  font-family:'DM Sans',sans-serif;font-size:13px;
+  color:var(--srch-tx);outline:none;
+  transition:border-color .2s,color .25s;
+  -moz-appearance:textfield;
+}
+.hrf-input::-webkit-inner-spin-button,.hrf-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.hrf-input::placeholder{color:var(--srch-ph)}
+.hrf-input:focus{border-color:var(--ac-green)}
+.hrf-toggle-wrap{display:flex;gap:6px}
+.hrf-toggle{
+  flex:1;padding:9px 8px;border-radius:4px;
+  font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;
+  border:1px solid var(--border);background:transparent;
+  color:var(--tx-2);cursor:none;transition:all .18s;
+}
+.hrf-toggle.active{
+  background:var(--ac-green-d);border-color:var(--ac-green);
+  color:var(--ac-green);
+}
+.hrf-toggle:hover:not(.active){background:var(--bg-raised);color:var(--tx-1)}
+.hrf-submit{
+  width:100%;background:var(--ac-green);color:var(--white);
+  border:none;border-radius:4px;padding:12px 20px;
+  font-family:'Syne',sans-serif;font-size:14px;font-weight:700;
+  cursor:none;letter-spacing:-.2px;
+  box-shadow:0 4px 16px rgba(46,204,113,.2);
+  transition:background .15s,transform .15s,box-shadow .15s;
+}
+.hrf-submit:hover{background:var(--green-700);transform:translateY(-1px);box-shadow:0 6px 20px rgba(46,204,113,.3)}
+@media(max-width:1000px){
+  .hrf-row{flex-direction:column}
+  .hrf-field-sm{max-width:100%}
+  .hero-req-form{max-width:100%}
+}
+
+</style>
+</head>
+<body>
+<div class="cur" id="cur"></div>
+<div class="cur-ring" id="curRing"></div>
+<div class="progress-bar" id="progressBar"></div>
+<div class="sticky-cta" id="stickyCta">
+  <div class="scta-text">Join the waitlist<span>2,847 people signed up &middot; 12 cities</span></div>
+  <button class="scta-btn" onclick="document.querySelector('.cta-sec').scrollIntoView({behavior:'smooth'})">Secure my spot &rarr;</button>
+</div>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a class="nav-logo" href="#">
+    <div class="nl-mark"><div class="nl-pill nl-p1"></div><div class="nl-pill nl-p2"></div><div class="nl-pill nl-p3"></div></div>
+    <div class="nl-word"><span class="nl-w1">Pill</span><span class="nl-w2">stack</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#for-you">For you</a></li>
+    <li><a href="#vision">Purpose</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:10px">
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle mode">
+      <span class="tt-icon" id="toggleIcon">&#9788;</span>
+      <span class="tt-label" id="toggleLabel">Dark</span>
+    </button>
+    <button class="nav-cta" onclick="document.querySelector('.cta-sec').scrollIntoView({behavior:'smooth'})">Join waitlist</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-geo">
+    <div class="geo-circle gc1"></div>
+    <div class="geo-circle gc2"></div>
+    <div class="geo-circle gc3"></div>
+    <div class="geo-blob gb1"></div>
+    <div class="geo-blob gb2"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <div class="he-proof"><span class="he-proof-num">2,847</span> people on waitlist</div>
+      
+    </div>
+    <h1 class="hero-h1">
+      <span class="l1">Find your medicines</span>
+      <span class="l2">in one click.</span>
+    </h1>
+    <p class="hero-sub"><strong>You no longer have to visit or call 10 pharmacies.</strong> Pillstack broadcasts your request to all pharmacies near you at once &mdash; you get the best price and delivery to your door in 30 minutes.</p>
+    <div class="hero-req-form" id="heroReqForm">
+      <div class="hrf-row">
+        <div class="hrf-field">
+          <label class="hrf-label">Drug name</label>
+          <input class="hrf-input" type="text" placeholder="e.g. Metformin, Amlodipine" id="reqDrug">
+        </div>
+        <div class="hrf-field">
+          <label class="hrf-label">Brand name <span class="hrf-optional">(optional)</span></label>
+          <input class="hrf-input" type="text" placeholder="e.g. Glucophage, Norvasc" id="reqBrand">
+        </div>
+      </div>
+      <div class="hrf-row">
+        <div class="hrf-field hrf-field-sm">
+          <label class="hrf-label">Quantity</label>
+          <input class="hrf-input" type="number" placeholder="e.g. 30" min="1" id="reqQty">
+        </div>
+        <div class="hrf-field">
+          <label class="hrf-label">Fulfilment</label>
+          <div class="hrf-toggle-wrap">
+            <button class="hrf-toggle active" id="togDelivery" onclick="setFulfilment(this,'delivery')">&#128666; Delivery</button>
+            <button class="hrf-toggle" id="togPickup" onclick="setFulfilment(this,'pickup')">&#127973; Pick up</button>
+          </div>
+        </div>
+      </div>
+      <button class="hrf-submit" onclick="submitRequest()">Find medicines near me &rarr;</button>
+    </div>
+    <div class="hero-tags">
+      <div class="htag" onclick="fillSearch('Metformin 500mg')">&#128138; Metformin</div>
+      <div class="htag" onclick="fillSearch('Amlodipine 5mg')">&#10084;&#65039; Amlodipine</div>
+      <div class="htag" onclick="fillSearch('Amoxicillin 250mg')">&#128137; Amoxicillin</div>
+      <div class="htag" onclick="fillSearch('Insulin')">&#129640; Insulin</div>
+      <div class="htag" onclick="fillSearch('blood pressure')">&#129536; Blood pressure</div>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><div class="hstat-num lemon">2,847</div><div class="hstat-label">patients already waiting</div></div>
+      <div class="hstat"><div class="hstat-num">15</div><div class="hstat-label">pharmacies ready to go</div></div>
+      <div class="hstat"><div class="hstat-num">12</div><div class="hstat-label">cities at launch</div></div>
+    </div>
+  </div>
+  <!-- Geometric pill visual — desktop only -->
+  <div class="hero-visual">
+    <div class="pill-viz">
+      <div class="pv-ring pv-r1"></div>
+      <div class="pv-ring pv-r2"></div>
+      <div class="pv-ring pv-r3"></div>
+      <div class="pv-pill pvp1"><div class="pvp-text">Broadcast</div></div>
+      <div class="pv-pill pvp2"><div class="pvp-text">Compete</div></div>
+      <div class="pv-pill pvp3"><div class="pvp-text">Delivered</div></div>
+      <div class="pv-data pvd1">&#10022; AI resolved</div>
+      <div class="pv-data pvd2">3 bids &middot; 12 min</div>
+      <div class="pv-data pvd3">NAFDAC &#10003;</div>
+    </div>
+  </div>
+</section>
+
+<!-- Mobile social proof -->
+<div class="mobile-proof" id="mobileProof">
+  <div class="mp-inner">
+    <div class="mp-stat-row">
+      <div class="mp-stat"><div class="mp-num">2,847</div><div class="mp-label">On waitlist</div></div>
+      <div class="mp-stat"><div class="mp-num">15</div><div class="mp-label">Pharmacies confirmed</div></div>
+      <div class="mp-stat"><div class="mp-num">12</div><div class="mp-label">Cities</div></div>
+    </div>
+    <div class="mp-trust">
+      <div class="mp-badge"><div class="mpb-icon">&#128737;&#65039;</div><div class="mpb-title">NAFDAC Verified</div></div>
+      <div class="mp-badge"><div class="mpb-icon">&#128274;</div><div class="mpb-title">Escrow Payment</div></div>
+      <div class="mp-badge"><div class="mpb-icon">&#9889;</div><div class="mpb-title">30 min delivery</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PROBLEM (position 3) -->
+<div class="problem-sec">
+  <div class="problem-eyebrow">The reality</div>
+  <h2 class="problem-title">The gap that <em style="color:#E53E3E;font-style:normal;">costs lives.</em></h2>
+  <div class="problem-grid">
+    <div class="prob-card"><div class="prob-num" style="color:#E53E3E">4&ndash;6</div><div class="prob-title-text">Pharmacies visited per search</div><div class="prob-desc">Average before finding a drug &mdash; with no guarantee, while patient health deteriorates.</div></div>
+    <div class="prob-card"><div class="prob-num" style="color:#E53E3E">2&ndash;3h</div><div class="prob-title-text">Wasted every month on refills</div><div class="prob-desc">Hours a chronic illness patient loses every single month searching for the same medications.</div></div>
+    <div class="prob-card"><div class="prob-num" style="color:#E53E3E">&lt;30%</div><div class="prob-title-text">Of pharmacies digitised</div><div class="prob-desc">3,900+ registered in Nigeria. Less than 30% have any digital presence. The supply exists &mdash; invisibly.</div></div>
+    <div class="prob-card"><div class="prob-num">&rarr;</div><div class="prob-title-text">Pillstack solves all three</div><div class="prob-desc">One broadcast replaces 6 calls. Real-time bids replace 3 hours. Every pharmacy visible from your phone.</div></div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS (position 4) -->
+<section class="sec light" id="how">
+  <div class="sec-ey ink reveal">The Process</div>
+  <h2 class="sec-h2 on-light reveal">Three simple steps.<br><em>Zero stress.</em></h2>
+  <p class="sec-sub dark-text reveal">Every visit or call you made to a pharmacy, every search that came up empty &mdash; Pillstack replaces all of that with just one click.</p>
+  <div class="steps-grid reveal">
+    <div class="step-card">
+      <div class="step-num">01</div>
+      <div class="step-svg-wrap">
+        <svg width="72" height="72" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="36" cy="36" r="8" fill="var(--teal3)"/>
+          <circle class="ring ring1" cx="36" cy="36" r="7"/>
+          <circle class="ring ring2" cx="36" cy="36" r="7"/>
+          <circle class="ring ring3" cx="36" cy="36" r="7"/>
+          <rect x="8" y="10" width="12" height="9" rx="1" fill="var(--teal3)" opacity="0.35"/>
+          <rect x="52" y="12" width="12" height="9" rx="1" fill="var(--teal3)" opacity="0.35"/>
+          <rect x="9" y="50" width="12" height="9" rx="1" fill="var(--teal3)" opacity="0.35"/>
+          <rect x="51" y="50" width="12" height="9" rx="1" fill="var(--teal3)" opacity="0.35"/>
+          <line x1="36" y1="36" x2="14" y2="14" stroke="var(--teal3)" stroke-width="1" stroke-dasharray="4 3" opacity="0.2"/>
+          <line x1="36" y1="36" x2="58" y2="16" stroke="var(--teal3)" stroke-width="1" stroke-dasharray="4 3" opacity="0.2"/>
+          <line x1="36" y1="36" x2="15" y2="55" stroke="var(--teal3)" stroke-width="1" stroke-dasharray="4 3" opacity="0.2"/>
+          <line x1="36" y1="36" x2="57" y2="55" stroke="var(--teal3)" stroke-width="1" stroke-dasharray="4 3" opacity="0.2"/>
+        </svg>
+      </div>
+      <div class="step-title">You broadcast your need</div>
+      <div class="step-desc">Type a drug name or describe your symptoms. Our AI resolves it and broadcasts to every nearby pharmacy in under 3 seconds.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">02</div>
+      <div class="step-svg-wrap">
+        <svg width="72" height="72" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+          <g class="card3"><rect x="9" y="42" width="54" height="20" rx="3" fill="var(--teal4)" opacity="0.4"/><rect x="16" y="48" width="22" height="3" rx="1" fill="var(--teal3)" opacity="0.4"/><rect x="42" y="48" width="14" height="3" rx="1" fill="var(--teal3)" opacity="0.5"/></g>
+          <g class="card2"><rect x="7" y="29" width="54" height="20" rx="3" fill="var(--teal4)" opacity="0.6"/><rect x="14" y="35" width="20" height="3" rx="1" fill="var(--teal2)" opacity="0.55"/><rect x="40" y="35" width="14" height="3" rx="1" fill="var(--teal2)" opacity="0.7"/></g>
+          <g class="card1"><rect x="5" y="14" width="54" height="22" rx="3" fill="var(--teal3)" opacity="0.85"/><rect x="12" y="21" width="24" height="3" rx="1" fill="white" opacity="0.7"/><rect x="12" y="27" width="16" height="2.5" rx="1" fill="white" opacity="0.4"/></g>
+          <g class="chk" transform="translate(48,5)"><circle cx="11" cy="11" r="11" fill="var(--lemon2)"/><polyline points="5,11 10,16 17,6" stroke="var(--dark)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
+        </svg>
+      </div>
+      <div class="step-title">Pharmacies compete for you</div>
+      <div class="step-desc">Pharmacies in stock respond with live bids &mdash; real price, real time, real rating. You pick the best deal.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">03</div>
+      <div class="step-svg-wrap">
+        <svg width="72" height="72" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 58 Q36 58 68 58" stroke="var(--teal4)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <line x1="20" y1="58" x2="30" y2="58" stroke="var(--stone)" stroke-width="2" stroke-dasharray="4 4" opacity="0.7"/>
+          <line x1="40" y1="58" x2="52" y2="58" stroke="var(--stone)" stroke-width="2" stroke-dasharray="4 4" opacity="0.7"/>
+          <g class="bike">
+            <circle class="whl" cx="20" cy="52" r="8" fill="none" stroke="var(--teal3)" stroke-width="2.5"/><circle cx="20" cy="52" r="2.5" fill="var(--teal3)"/>
+            <circle class="whl" cx="48" cy="52" r="8" fill="none" stroke="var(--teal3)" stroke-width="2.5"/><circle cx="48" cy="52" r="2.5" fill="var(--teal3)"/>
+            <line x1="20" y1="52" x2="34" y2="34" stroke="var(--teal2)" stroke-width="2" stroke-linecap="round"/>
+            <line x1="34" y1="34" x2="48" y2="52" stroke="var(--teal2)" stroke-width="2" stroke-linecap="round"/>
+            <line x1="34" y1="34" x2="42" y2="40" stroke="var(--teal2)" stroke-width="2" stroke-linecap="round"/>
+            <line x1="26" y1="44" x2="34" y2="34" stroke="var(--teal2)" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="42" y1="34" x2="46" y2="38" stroke="var(--teal2)" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="38" cy="28" r="7" fill="var(--teal2)" opacity="0.85"/>
+            <rect x="23" y="32" width="10" height="11" rx="2" fill="var(--teal3)" opacity="0.7"/>
+          </g>
+          <line x1="4" y1="32" x2="13" y2="32" stroke="var(--lemon2)" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+          <line x1="4" y1="40" x2="11" y2="40" stroke="var(--lemon2)" stroke-width="2" stroke-linecap="round" opacity="0.28"/>
+        </svg>
+      </div>
+      <div class="step-title">Delivered in 30 minutes</div>
+      <div class="step-desc">Accept a bid. A verified rider delivers to your door. Track every step live on the app.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES (4 features) -->
+<section class="sec white" id="features">
+  <div class="sec-ey teal reveal">Core Features</div>
+  <h2 class="sec-h2 on-light reveal">What makes Pillstack the<br><em>go-to medicines platform.</em></h2>
+  <div style="margin-top:40px" class="reveal">
+    <div class="feat-row-primary">
+      <div class="feat-card primary">
+        <div class="feat-badge teal">&#10022; Primary differentiator</div>
+        <div class="feat-demo"><div class="typing-text">blood pressure medication</div><div class="suggest-chip">&rarr; Amlodipine 5mg &middot; Lisinopril 10mg</div></div>
+        <div class="feat-title">AI Drug Search</div>
+        <div class="feat-desc">Describe symptoms in plain language. Our AI resolves to the correct drug, dosage, and available brands instantly. No medical knowledge required.</div>
+        <div class="feat-tag" style="color:var(--teal2);background:rgba(10,92,92,.06);border-color:rgba(10,92,92,.18)">&#10022; Claude AI</div>
+      </div>
+      <div class="feat-card primary">
+        <div class="feat-badge teal">&#10022; Primary differentiator</div>
+        <div class="feat-demo"><div class="bc-w"></div><div class="bc-w"></div><div class="bc-w"></div><div class="bc-w"></div><div class="bc-c"></div><div class="bc-ph">&#128138;</div><div class="bc-ph">&#127973;</div><div class="bc-ph">&#9877;&#65039;</div><div class="bc-ph">&#128137;</div></div>
+        <div class="feat-title">Live Broadcast Matching</div>
+        <div class="feat-desc">Your request reaches every eligible pharmacy simultaneously. They compete with live bids. You choose the best deal. No calls, no guesswork.</div>
+        <div class="feat-tag" style="color:var(--teal2);background:rgba(10,92,92,.06);border-color:rgba(10,92,92,.18)">&#9679; Real-time network</div>
+      </div>
+    </div>
+    <div class="feat-row-secondary" style="grid-template-columns:1fr">
+      <div class="feat-card secondary">
+        <div class="feat-badge lemon">&#10003; Found signal</div>
+        <div class="feat-demo"><div class="notif-lt"><div class="notif-ic">&#128276;</div><div><div class="nt-t">Ozempic 1mg back in stock</div><div class="nt-s">3 pharmacies near you &middot; now</div></div></div></div>
+        <div class="feat-title">Restock Alerts</div>
+        <div class="feat-desc">Drug unavailable? Set an alert. The moment any pharmacy in your radius restocks it, you&rsquo;re first to know. Stop checking &mdash; we check for you.</div>
+        <div class="feat-tag" style="color:var(--teal);background:rgba(39,174,96,.07);border-color:rgba(39,174,96,.22)">&#128276; Auto-monitor</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="sec dark2" id="testimonials">
+  <div class="sec-ey lemon reveal">What people say</div>
+  <div class="reveal" style="margin-bottom:12px">
+    <div style="font-family:'Syne',sans-serif;font-size:clamp(32px,4.5vw,56px);font-weight:800;letter-spacing:-2px;line-height:1.1;color:var(--tx-1)">Real people.</div>
+    <div style="font-family:'Syne',sans-serif;font-size:clamp(32px,4.5vw,56px);font-weight:800;letter-spacing:-2px;line-height:1.1;color:var(--tx-1)">Real pain.</div>
+    <div style="font-family:'Syne',sans-serif;font-size:clamp(32px,4.5vw,56px);font-weight:800;letter-spacing:-2px;line-height:1.1;color:var(--ac-green)">Real solution.</div>
+  </div>
+  <p class="sec-sub reveal" style="margin-bottom:44px">Three people. Three different problems. One platform that solved all of them.</p>
+  <div class="tgrid reveal">
+    <div class="tcard"><div class="tc-context">Caregiver &middot; searching for Amlodipine</div><div class="tc-q">&ldquo;I visited four pharmacies before finding my mum&rsquo;s brand of medications. Two wasted hours that I didn&rsquo;t have. I signed up on the waitlist the moment I saw it.&rdquo;</div><div class="tc-auth"><div class="ta-av" style="background:var(--teal3);border-radius:4px">AJ</div><div><div class="ta-name">Adaeze Johnson</div><div class="ta-sub">Marketing Manager &middot; Lekki, Lagos</div></div></div></div>
+    <div class="tcard"><div class="tc-context">Chronic patient &middot; Metformin monthly refill</div><div class="tc-q">&ldquo;11 years with diabetes. Every month, the same battle &mdash; will the pharmacy have my brand of metformin? Pillstack means I&rsquo;ll never fight that battle again.&rdquo;</div><div class="tc-auth"><div class="ta-av" style="background:var(--lemon);color:var(--dark);border-radius:4px">CE</div><div><div class="ta-name">Chidi Eze</div><div class="ta-sub">School Principal &middot; Ikeja, Lagos</div></div></div></div>
+    <div class="tcard"><div class="tc-context">Pharmacy owner &middot; new to digital</div><div class="tc-q">&ldquo;My pharmacy may be new, but I know I am well stocked. I will like patients to be able to reach me. Pillstack helps me to achieve that at zero cost.&rdquo;</div><div class="tc-auth"><div class="ta-av" style="background:var(--teal2);border-radius:4px">OA</div><div><div class="ta-name">Olamide Aremu</div><div class="ta-sub">Pharmacy Owner &middot; Surulere, Lagos</div></div></div></div>
+  </div>
+</section>
+
+<!-- AUDIENCE -->
+<div class="aud-wrap" id="for-you">
+  <div class="sec-ey light-t" style="margin-bottom:11px">Built for you</div>
+  <h2 id="audHeading" style="font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,48px);font-weight:800;letter-spacing:-2px;color:var(--white);margin-bottom:28px;line-height:1.02">Find any medicine<br><span style="color:var(--ac-green)">near you in 30 minutes.</span></h2>
+  <div class="aud-tabs" id="audTabs">
+    <button class="aud-tab active" onclick="switchAud(0)">&#128100; Patient</button>
+    <button class="aud-tab" onclick="switchAud(1)">&#127973;&#65039; Pharmacy</button>
+  </div>
+  <div class="aud-panel active" id="aud-0">
+    <div class="aud-card aud-patient">
+      <div class="aud-icon">&#128100;</div>
+      <div class="aud-title">Patients &amp; Caregivers</div>
+      <div class="aud-role">Find any medicine near you in 5 minutes</div>
+      <div class="aud-features">
+        <div class="af"><div class="af-dot" style="background:var(--lemon2)"></div>AI search &mdash; describe symptoms or type the drug name</div>
+        <div class="af"><div class="af-dot" style="background:var(--lemon2)"></div>Live pharmacy bids &mdash; competitive pricing every time</div>
+        <div class="af"><div class="af-dot" style="background:var(--lemon2)"></div>30-minute home delivery tracked live on the app</div>
+        <div class="af"><div class="af-dot" style="background:var(--lemon2)"></div>Drug authenticity verified on every single order</div>
+        <div class="af"><div class="af-dot" style="background:var(--lemon2)"></div>Restock alerts when unavailable drugs come in</div>
+      </div>
+      <a class="aud-cta" onclick="document.querySelector('.cta-sec').scrollIntoView({behavior:'smooth'});return false" href="#">Join the waitlist &rarr;</a>
+    </div>
+    <div class="aud-context">
+      <div class="aud-context-title">What it solves for you</div>
+      <div class="aud-stat"><div class="as-num" style="color:var(--lemon2)">6 &rarr; 1</div><div class="as-label">Pharmacy calls reduced to a single click. Every nearby pharmacy hears you instantly.</div></div>
+      <div class="aud-stat"><div class="as-num" style="color:var(--lemon2)">3h &rarr; 30m</div><div class="as-label">Monthly refill time cut by 6&times;. From a battle to a background task.</div></div>
+      <div class="aud-stat"><div class="as-num" style="color:rgba(255,255,255,.45)">&#8358;0</div><div class="as-label">Cost to join. Patient app is free. Pay only for medication and delivery.</div></div>
+    </div>
+  </div>
+  <div class="aud-panel" id="aud-1">
+    <div class="aud-card aud-pharm">
+      <div class="aud-icon">&#127973;&#65039;</div>
+      <div class="aud-title">Pharmacies</div>
+      <div class="aud-role">Reach new customers</div>
+      <div class="aud-features">
+        <div class="af"><div class="af-dot" style="background:var(--teal3)"></div>Receive real-time patient broadcasts in your zone</div>
+        <div class="af"><div class="af-dot" style="background:var(--teal3)"></div>Compete on price &mdash; you control every single bid</div>
+        <div class="af"><div class="af-dot" style="background:var(--teal3)"></div>Demand heatmap: see what people nearby search for</div>
+        <div class="af"><div class="af-dot" style="background:var(--teal3)"></div>Revenue dashboard, daily analytics and payouts</div>
+        <div class="af"><div class="af-dot" style="background:var(--teal3)"></div>Promoted listings for specific drug searches</div>
+      </div>
+      <a class="aud-cta" href="#">Register your pharmacy &rarr;</a>
+    </div>
+    <div class="aud-context">
+      <div class="aud-context-title">What it unlocks for you</div>
+      <div class="aud-stat"><div class="as-num" style="color:var(--teal3)">New reach</div><div class="as-label">Patients who&rsquo;d never find you become your regular customers.</div></div>
+      <div class="aud-stat"><div class="as-num" style="color:rgba(255,255,255,.45)">&#8358;0 upfront</div><div class="as-label">No listing fee. Commission only when an order is successfully fulfilled.</div></div>
+      <div class="aud-stat"><div class="as-num" style="color:var(--teal3)">More revenue</div><div class="as-label">Increased revenue. Your earnings are visible on your dashboard.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<section class="cta-sec" id="waitlist">
+  <div class="cta-geo"></div>
+  <div class="cta-mark"><div class="cm-pill cm-1"></div><div class="cm-pill cm-2"></div><div class="cm-pill cm-3"></div></div>
+  <h2 class="cta-h2">Your medicines<br>are <em>waiting</em> for you.</h2>
+  <p class="cta-sub">Be first in your city. Get access the day we launch near you.</p>
+  <div class="cta-urgency"><div class="cu-dot"></div><span><span class="cu-num">2,847 patients</span> already waiting for launch &mdash; 12 cities</span></div>
+  <div class="cta-form-wrap">
+    <div class="cta-form cta-form-inputs">
+      <input class="cf-input" type="email" placeholder="Your email address" id="ctaEmail">
+      <input class="cf-input" type="text" placeholder="Your city (e.g. Lagos, Abuja)" id="ctaCity">
+    </div>
+    <button class="cf-btn-full" onclick="handleWaitlist()">Secure my spot &rarr;</button>
+  </div>
+  <div class="cta-privacy" id="ctaNote">&#128274; No spam. Unsubscribe anytime.</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="fb-logo"><div class="fb-m"><div class="fb-p fb-p1"></div><div class="fb-p fb-p2"></div><div class="fb-p fb-p3"></div></div><div class="fb-wrd"><span class="fb-w1">Pill</span><span class="fb-w2">stack</span></div></div>
+      <div class="fb-tag">Your medicines, found.</div>
+      <div class="fb-vision">Democratising Africa&rsquo;s medicines access</div>
+      <div class="fb-badges"><div class="fbb">Lagos &middot; 2026</div><div class="fbb">Seed Stage</div></div>
+    </div>
+    <div><div class="fc-title">Product</div><div class="flinks"><a href="#">How it works</a><a href="#">For patients</a><a href="#">For pharmacies</a></div></div>
+    <div><div class="fc-title">Company</div><div class="flinks"><a href="#">About</a><a href="#">Careers</a><a href="#">Press</a><a href="#">Investors</a></div></div>
+    <div><div class="fc-title">Support</div><div class="flinks"><a href="#">Help centre</a><a href="#">Contact</a><a href="#">NAFDAC compliance</a><a href="#">Privacy</a></div></div>
+  </div>
+  <div class="footer-bot">
+    <div>&copy; 2026 Pillstack Inc.</div>
+    <div class="fbot-links"><a href="#">Privacy</a><a href="#">Terms</a></div>
+    <div style="font-family:'DM Mono',monospace;font-size:10px;color:rgba(39,174,96,.3)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="91f9f4fdfdfed1e1f8fdfde2e5f0f2fabffff6">[email&#160;protected]</a></div>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script>
+/* cursor */
+const cur=document.getElementById('cur'),ring=document.getElementById('curRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+(function tick(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(tick)})();
+document.querySelectorAll('a,button,.htag,.aud-tab,.air-chip,.scta-btn,.theme-toggle').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.transform='translate(-50%,-50%) scale(2)';ring.style.opacity='.2'});
+  el.addEventListener('mouseleave',()=>{cur.style.transform='translate(-50%,-50%) scale(1)';ring.style.opacity='1'});
+});
+/* scroll */
+window.addEventListener('scroll',()=>{
+  document.getElementById('mainNav').classList.toggle('elevated',scrollY>20);
+  var prog=(scrollY/(document.body.scrollHeight-window.innerHeight))*100;
+  document.getElementById('progressBar').style.width=prog+'%';
+});
+/* sticky CTA */
+var hero=document.getElementById('hero');
+var stickyCta=document.getElementById('stickyCta');
+new IntersectionObserver(function(e){stickyCta.classList.toggle('visible',!e[0].isIntersecting)},{threshold:0.05}).observe(hero);
+/* AI search */
+var AI_DATA={
+  metformin:{t:'Identified: Metformin 500mg — antidiabetic for Type 2 diabetes.',c:['500mg tabs','850mg tabs','Extended release']},
+  amlodipine:{t:'Identified: Amlodipine 5mg — calcium channel blocker for hypertension.',c:['5mg','10mg','With Lisinopril']},
+  amoxicillin:{t:'Identified: Amoxicillin 250mg — broad-spectrum antibiotic.',c:['250mg capsules','500mg capsules','Suspension 125mg/5ml']},
+  insulin:{t:'Please specify insulin type for best results.',c:['Actrapid','Mixtard 30/70','Lantus']},
+  'blood pressure':{t:'Common choices: Amlodipine, Lisinopril, Losartan.',c:['Amlodipine 5mg','Lisinopril 10mg','Losartan 50mg']},
+  diabetes:{t:'Common choices: Metformin, Glibenclamide, Insulin.',c:['Metformin 500mg','Glibenclamide 5mg','Insulin']},
+  paracetamol:{t:'Identified: Paracetamol 500mg — analgesic and antipyretic.',c:['500mg tabs','1000mg tabs','Syrup 120mg/5ml']}
+};
+var searchTimer=null;
+function handleInput(inp){
+  var v=inp.value.trim().toLowerCase();
+  var resp=document.getElementById('aiResponse');
+  var typing=document.getElementById('airTyping');
+  var result=document.getElementById('airResult');
+  if(!v){resp.classList.remove('visible');return}
+  resp.classList.add('visible');
+  typing.style.display='flex';
+  result.style.display='none';
+  clearTimeout(searchTimer);
+  searchTimer=setTimeout(function(){
+    var key=Object.keys(AI_DATA).find(function(k){return v.includes(k)})||null;
+    var r=key?AI_DATA[key]:{t:'Searching pharmacies nearby...',c:['Search now']};
+    document.getElementById('airText').textContent=r.t;
+    document.getElementById('airChips').innerHTML=r.c.map(function(c){
+      return '<div class="air-chip" onclick="fillSearch(this.textContent)">'+c+'</div>';
+    }).join('');
+    typing.style.display='none';
+    result.style.display='flex';
+  },640);
+}
+function fillSearch(v){document.getElementById('heroInput').value=v;handleInput(document.getElementById('heroInput'))}
+function triggerSearch(){if(document.getElementById('heroInput').value.trim())document.querySelector('.cta-sec').scrollIntoView({behavior:'smooth'})}
+/* waitlist */
+function handleWaitlist(){
+  var el=document.getElementById('ctaEmail');
+  var cityEl=document.getElementById('ctaCity');
+  if(!el.value.trim()||!el.value.includes('@')){el.style.borderColor='#58D68D';el.focus();return}
+  if(cityEl&&!cityEl.value.trim()){cityEl.style.borderColor='#58D68D';cityEl.focus();return}
+  el.style.borderColor='#14B8A6';
+  if(cityEl)cityEl.style.borderColor='#14B8A6';
+  document.getElementById('ctaNote').innerHTML='<strong style="color:#58D68D">You are on the list!</strong> We will reach out when Pillstack launches in your city.';
+  var btn=document.querySelector('.cf-btn-full');
+  if(btn){btn.textContent='You are in!';btn.style.background='#14B8A6';}
+  stickyCta.classList.remove('visible');
+}
+/* scroll reveal */
+new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('revealed');this.unobserve(e.target)}},this)},{threshold:.08}).observe=function(){};
+var revObs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('revealed');revObs.unobserve(e.target)}})},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(function(r){revObs.observe(r)});
+/* audience tabs */
+var audHeadings=[
+  'Find any medicine<br><span style="color:var(--ac-green)">near you in 30 minutes.</span>',
+  'Reach patients<br><span style="color:#14B8A6">who cannot find you yet.</span>'
+];
+function switchAud(i){
+  document.querySelectorAll('.aud-tab').forEach(function(t,j){
+    t.classList.remove('active','teal-tab');
+    if(j===i){t.classList.add('active');if(i===1)t.classList.add('teal-tab');}
+  });
+  document.querySelectorAll('.aud-panel').forEach(function(p,j){
+    p.classList.toggle('active',j===i);
+  });
+  var h=document.getElementById('audHeading');
+  if(h){
+    h.classList.add('switching');
+    setTimeout(function(){h.innerHTML=audHeadings[i];h.classList.remove('switching')},200);
+  }
+}
+/* theme */
+function setTheme(theme,save){
+  document.documentElement.setAttribute('data-theme',theme);
+  if(save)try{localStorage.setItem('ps3-theme',theme)}catch(e){}
+  var icon=document.getElementById('toggleIcon');
+  var lbl=document.getElementById('toggleLabel');
+  if(icon)icon.textContent=theme==='dark'?'\u2600':'\u263D';
+  if(lbl)lbl.textContent=theme==='dark'?'Light':'Dark';
+}
+function toggleTheme(){
+  var cur=document.documentElement.getAttribute('data-theme')||'dark';
+  setTheme(cur==='dark'?'light':'dark',true);
+}
+(function(){
+  var saved='';
+  try{saved=localStorage.getItem('ps3-theme')||''}catch(e){}
+  var sys=(window.matchMedia&&window.matchMedia('(prefers-color-scheme:light)').matches)?'light':'dark';
+  setTheme(saved||sys,false);
+})();
+
+/* Hero request form */
+var hrfFulfilment='delivery';
+function setFulfilment(btn,type){
+  hrfFulfilment=type;
+  document.querySelectorAll('.hrf-toggle').forEach(function(b){b.classList.remove('active')});
+  btn.classList.add('active');
+}
+function submitRequest(){
+  var drug=document.getElementById('reqDrug');
+  if(!drug||!drug.value.trim()){
+    if(drug){drug.style.borderColor='var(--ac-green)';drug.focus();}
+    return;
+  }
+  document.querySelector('.cta-sec').scrollIntoView({behavior:'smooth'});
+}
+
+</script>
+</body>
+</html>
